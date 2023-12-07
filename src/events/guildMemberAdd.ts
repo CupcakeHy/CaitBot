@@ -1,16 +1,16 @@
 import { ChannelType, AttachmentBuilder, EmbedBuilder } from 'discord.js';
 import { createCanvas, loadImage } from 'canvas';
 import { event, Events } from '../utils/index.js';
-import { getEnvVar } from "../utils/index.js";
+import Keys from '../keys.js';
 
 export default event(Events.GuildMemberAdd, async ({ log }, member) => {
-	const channel = member.guild.channels.cache.get(getEnvVar('WELCOME_CHANNEL'));
-	const role = member.guild.roles.cache.get(getEnvVar('ROLE_ID'));
+	const channel = member.guild.channels.cache.get(Keys.welcomeChannel);
+	const role = member.guild.roles.cache.get(Keys.roleId);
 
 	const canvas = createCanvas(1700, 650);
 	const ctx = canvas.getContext('2d');
 
-	const background = await loadImage('./img/fondo-bienvenidas.png');
+	const background = await loadImage('./img/welcome.png');
 	ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 
 	ctx.strokeStyle = 'black';
@@ -39,12 +39,12 @@ export default event(Events.GuildMemberAdd, async ({ log }, member) => {
 	const avatar = await loadImage(member.user.displayAvatarURL({ extension: 'jpg' }));
 	ctx.drawImage(avatar, 64, canvas.height / 2 - 200, 400, 400);
 
-	const attachment = new AttachmentBuilder(canvas.toBuffer(), { name: 'fondo-bienvenidas.png' });
+	const attachment = new AttachmentBuilder(canvas.toBuffer(), { name: 'welcome.png' });
 
 	const welcomeEmbed = new EmbedBuilder()
         .setColor(0x725c9d)
         .setDescription(`**¡Te doy la bienvenida, ${member.user}!**`)
-        .setImage('attachment://fondo-bienvenidas.png');
+        .setImage('attachment://welcome.png');
 
 	if (channel?.type === ChannelType.GuildText) {
 		channel.send({ embeds: [welcomeEmbed], files: [attachment] });

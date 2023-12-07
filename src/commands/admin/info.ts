@@ -26,7 +26,7 @@ export default command(data, async ({ interaction }) => {
 		)
 
 	if (channel?.type === ChannelType.GuildText) {
-		channel.send({ files: [{ attachment: './img/informacion.png' }], embeds: [embed] })
+		channel.send({ files: [{ attachment: './img/info.png' }], embeds: [embed] })
 			.then(() => {
 				channel.send({ content: "https://discord.gg/s7EKyMm" });
 			});
@@ -34,6 +34,6 @@ export default command(data, async ({ interaction }) => {
 
 
 	return interaction.reply(
-		Reply(`Embed de información enviado a ${channel}`, Color.Success)
+		Reply(`Información enviada a ${channel}`, Color.Success)
 	);
 });

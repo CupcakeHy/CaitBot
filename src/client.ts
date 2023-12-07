@@ -42,7 +42,6 @@ const job = CronJob.from({
 			const streamData = await getStreamStatus(appAccessToken);
 
 			if (streamData) {
-				console.log('received stream data');
 				if (!isStreamOnline) {
 					const channel = client.channels.cache.get(Keys.announcementChannel);
 

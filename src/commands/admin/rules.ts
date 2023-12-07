@@ -28,11 +28,11 @@ export default command(data, async ({ interaction }) => {
 		.setFooter({ text: "El incumplimiento de cualquiera de estas normas puede conllevar a mute, kick o ban." });
 
 		if (channel?.type === ChannelType.GuildText) {
-			channel.send({ files: [{ attachment: './img/normas.png' }], embeds: [embed] });
+			channel.send({ files: [{ attachment: './img/rules.png' }], embeds: [embed] });
 		}
 
 
 	return interaction.reply(
-		Reply(`Embed de reglas enviado a ${channel}`, Color.Success)
+		Reply(`Normas enviadas a ${channel}`, Color.Success)
 	);
 });

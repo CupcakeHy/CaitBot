@@ -18,7 +18,7 @@ export default event(Events.GuildMemberAdd, async ({ log }, member) => {
 	ctx.fillStyle = '#f2f2f2';
 	
 	var textString = `${member.user.username}`;
-	if (textString.length >= 14) {
+	if (textString.length >= 13) {
 		ctx.font = 'bold 100px Rubik';
 	} else {
 		ctx.font = 'bold 150px Rubik';

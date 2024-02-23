@@ -9,7 +9,7 @@ import {
 } from "discord.js";
 
 export async function getStreamStatus(appAccessToken: AccessToken) {
-	const url = "https://api.twitch.tv/helix/streams?user_login=cupcakehy";
+	const url = "https://api.twitch.tv/helix/streams?user_login=caitlyn64";
 
 	const options = {
 		headers: {
@@ -68,15 +68,15 @@ export async function postStreamEmbed(client: Client, streamData: { gameName: st
 		.setColor("#7557ad")
 		.setTitle(title)
 		.setAuthor({
-			name: "\u00A1CupcakeHy est\u00E1 en directo!",
+			name: "\u00A1Caitlyn64 est\u00E1 en directo!",
 			iconURL:
 				"https://static-cdn.jtvnw.net/jtv_user_pictures/c6a9639d-6812-440f-b166-28a011de93ba-profile_image-300x300.png",
-			url: "https://www.twitch.tv/cupcakehy",
+			url: "https://www.twitch.tv/caitlyn64",
 		})
-		.setURL("https://www.twitch.tv/cupcakehy")
+		.setURL("https://www.twitch.tv/caitlyn64")
 		.addFields({
 			name: "Jugando " + gameName,
-			value: "[Ver directo](https://www.twitch.tv/cupcakehy)",
+			value: "[Ver directo](https://www.twitch.tv/caitlyn64)",
 			inline: true,
 		})
 		.setImage(thumbFile.attachment.toString())

@@ -17,7 +17,7 @@ await authProvider.addUserForToken(tokenData, ['chat']);
 
 const bot = new Bot({
 	authProvider,
-	channels: ['caitlyn64'],
+	channels: [Keys.channel],
 	commands: [
 		createBotCommand('discord', (params, { reply }) => {
 			reply("Servidor de Discord: https://discord.gg/s7EKyMm");

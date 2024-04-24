@@ -10,6 +10,8 @@ export const Keys = {
 	announcementChannel: getEnvVar('ANNOUNCEMENT_CHANNEL'),
 	forumChannel: getEnvVar('FORUM_CHANNEL'),
 	roleId: getEnvVar('ROLE_ID'),
+	channel: getEnvVar('CHANNEL'),
+	iconUrl: getEnvVar('ICON_URL'),
 } as const;
 
 export default Keys;

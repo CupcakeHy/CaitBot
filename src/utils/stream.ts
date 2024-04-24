@@ -9,7 +9,7 @@ import {
 } from "discord.js";
 
 export async function getStreamStatus(appAccessToken: AccessToken) {
-	const url = "https://api.twitch.tv/helix/streams?user_login=caitlyn64";
+	const url = `https://api.twitch.tv/helix/streams?user_login=${Keys.channel}`;
 
 	const options = {
 		headers: {
@@ -20,10 +20,11 @@ export async function getStreamStatus(appAccessToken: AccessToken) {
 
 	try {
 		const response = await fetch(url, options);
-		const data = await response.json();
+		const json = await response.json();
+		const data = json.data;
 
 		if (data.length > 0) {
-			const streamData = { gameName: data.game_name, title: data.title };
+			const streamData = { gameName: data[0].game_name, title: data[0].title };
 			return streamData;
 		}
 
@@ -45,13 +46,12 @@ async function getGameThumbnail(gameName: string, appAccessToken: AccessToken) {
 
 	try {
 		const response = await fetch(url, options);
-		const data = await response.json();
+		const json = await response.json();
+		const data = json.data;
 
-		if (typeof data.box_art_url === 'string') {
-			const rawThumbnail = data.box_art_url;
-			const gameThumbnail = rawThumbnail.replace('{width}x{height}', '570x760');
-			return gameThumbnail;
-		}
+		const rawThumbnail = data[0].box_art_url;
+		const gameThumbnail = rawThumbnail.replace('{width}x{height}', '570x760');
+		return gameThumbnail;
 	} catch (err) {
 		console.error("[ERROR]:", err);
 	}
@@ -69,14 +69,13 @@ export async function postStreamEmbed(client: Client, streamData: { gameName: st
 		.setTitle(title)
 		.setAuthor({
 			name: "\u00A1Caitlyn64 est\u00E1 en directo!",
-			iconURL:
-				"https://static-cdn.jtvnw.net/jtv_user_pictures/c6a9639d-6812-440f-b166-28a011de93ba-profile_image-300x300.png",
-			url: "https://www.twitch.tv/caitlyn64",
+			iconURL: Keys.iconUrl,
+			url: `https://www.twitch.tv/${Keys.channel}`,
 		})
-		.setURL("https://www.twitch.tv/caitlyn64")
+		.setURL(`https://www.twitch.tv/${Keys.channel}`)
 		.addFields({
 			name: "Jugando " + gameName,
-			value: "[Ver directo](https://www.twitch.tv/caitlyn64)",
+			value: `[Ver directo](https://www.twitch.tv/${Keys.channel})`,
 			inline: true,
 		})
 		.setImage(thumbFile.attachment.toString())

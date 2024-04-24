@@ -40,7 +40,7 @@ const job = CronJob.from({
 	onTick: async function () {
 		try {
 			const streamData = await getStreamStatus(appAccessToken);
-
+			
 			if (streamData) {
 				if (!isStreamOnline) {
 					const channel = client.channels.cache.get(Keys.announcementChannel);

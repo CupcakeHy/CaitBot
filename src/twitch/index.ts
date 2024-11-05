@@ -12,12 +12,14 @@ const announcementChannel = config.get('discord.guild.channels.announcement') as
 
 // Twitch vars
 const channel = config.get('twitch.channel') as string;
+const botChannel = config.get('twitch.botChannel') as string;
 const clientId = config.get('twitch.clientId') as string;
 const clientSecret = config.get('twitch.clientSecret') as string;
+const appImpliedScopes = [ "chat:edit", "chat:read", "channel:read:redemptions", "channel:manage:redemptions" ];
 
-const authProvider = new RefreshingAuthProvider({ clientId, clientSecret });
+const authProvider = new RefreshingAuthProvider({ clientId, clientSecret, appImpliedScopes });
 const apiClient = new ApiClient({ authProvider });
-const userId = await apiClient.users.getUserByName(channel);
+const userId = await apiClient.users.getUserByName(botChannel);
 
 const tokenData = JSON.parse(await fs.readFile('tokens.json', 'utf8'));
 
@@ -25,12 +27,11 @@ authProvider.onRefresh(async (userId: string, newTokenData: AccessToken) => {
 	await fs.writeFile('tokens.json', JSON.stringify(newTokenData, null, 4), 'utf-8');
 });
 
-await authProvider.addUserForToken(tokenData, ['chat']);
 authProvider.addUser(userId as UserIdResolvable, tokenData, ['chat']);
 
 const chatClient = new ChatClient({
 	authProvider,
-	channels: [],
+	channels: [ channel ],
 	// commands: [
 	// 	createBotCommand('discord', (params, { reply }) => {
 	// 		reply('Servidor de Discord: https://discord.gg/s7EKyMm');
@@ -39,7 +40,6 @@ const chatClient = new ChatClient({
 });
 
 chatClient.connect();
-chatClient.join(channel);
 
 chatClient.onSub((channel, user) => {
 	chatClient.say(channel, `¡Muchas gracias por suscribirte, @${user}!`);

@@ -41,7 +41,7 @@ chatClient.onSub(async (channel, user) => {
 });
 
 chatClient.onMessage(async (channel, text) => {
-	if (text === '!discord') {
+	if (text == '!discord') {
 		chatClient.say(channel, 'Servidor de Discord: https://discord.gg/s7EKyMm');
 	}
 });

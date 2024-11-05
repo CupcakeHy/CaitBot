@@ -1,11 +1,14 @@
+import config from 'config';
 import { ChannelType, AttachmentBuilder, EmbedBuilder } from 'discord.js';
 import { createCanvas, loadImage } from 'canvas';
 import { event, Events } from '../utils/index.js';
-import Keys from '../keys.js';
+
+const welcomeChannel = config.get('discord.guild.channels.welcome') as string;
+const cupcakeRole = config.get('discord.guild.roles.cupcake') as string;
 
 export default event(Events.GuildMemberAdd, async ({ log }, member) => {
-	const channel = member.guild.channels.cache.get(Keys.welcomeChannel);
-	const role = member.guild.roles.cache.get(Keys.roleId);
+	const channel = member.guild.channels.cache.get(welcomeChannel);
+	const role = member.guild.roles.cache.get(cupcakeRole);
 
 	const canvas = createCanvas(1700, 650);
 	const ctx = canvas.getContext('2d');
@@ -16,7 +19,7 @@ export default event(Events.GuildMemberAdd, async ({ log }, member) => {
 	ctx.strokeStyle = 'black';
 	ctx.lineWidth = 3;
 	ctx.fillStyle = '#f2f2f2';
-	
+
 	var textString = `${member.user.username}`;
 	if (textString.length >= 13) {
 		ctx.font = 'bold 100px Rubik';
@@ -26,7 +29,7 @@ export default event(Events.GuildMemberAdd, async ({ log }, member) => {
 	ctx.fillText(textString, 520, canvas.height / 2 - 25);
 	ctx.strokeText(textString, 520, canvas.height / 2 - 25);
 
-	var textString2 = `¡Disfruta de tu estancia!`;
+	var textString2 = '¡Disfruta de tu estancia!';
 	ctx.font = 'bold 80px Rubik';
 	ctx.fillText(textString2, 520, canvas.height / 2 + 100);
 	ctx.strokeText(textString2, 520, canvas.height / 2 + 100);

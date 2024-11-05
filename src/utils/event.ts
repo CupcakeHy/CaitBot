@@ -31,7 +31,7 @@ export function registerEvents(client: Client, events: Event[]): void {
 			try {
 				callback({ client, log }, ...args);
 			} catch (err) {
-				log('[ERROR]:', err);
+				log(`[ERROR]: Event ${key} -`, err);
 			}
 		});
 	}

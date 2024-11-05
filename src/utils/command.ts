@@ -6,6 +6,7 @@ import type {
 	SlashCommandBuilder,
 	SlashCommandSubcommandsOnlyBuilder,
 	RESTPostAPIApplicationCommandsJSONBody,
+	SlashCommandOptionsOnlyBuilder,
 } from 'discord.js'
 
 export interface CommandProps {
@@ -18,6 +19,7 @@ export type CommandCallback = (props: CommandProps) => Awaitable<unknown>;
 
 export type CommandMeta =
 	| SlashCommandBuilder
+	| SlashCommandOptionsOnlyBuilder
 	| SlashCommandSubcommandsOnlyBuilder
 	| Omit<SlashCommandBuilder, 'addSubcommand' | 'addSubcommandGroup'>
 	| RESTPostAPIApplicationCommandsJSONBody

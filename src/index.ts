@@ -1,2 +1,2 @@
-import('./client.js');
-import('./chatbot.js');
+import('./discord/index.js');
+import('./twitch/index.js');

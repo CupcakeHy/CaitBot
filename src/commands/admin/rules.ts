@@ -11,7 +11,6 @@ const data = new SlashCommandBuilder()
 			.addChannelTypes(ChannelType.GuildText)
 	)
 	.setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
-	.setDMPermission(false);
 
 export default command(data, async ({ interaction }) => {
 	const channel = interaction.options.getChannel('channel') ?? interaction.channel;

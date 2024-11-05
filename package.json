@@ -19,12 +19,14 @@
     "node": ">=16.0.0"
   },
   "dependencies": {
+    "@twurple/api": "^7.1.0",
     "@twurple/auth": "^7.1.0",
-    "@twurple/easy-bot": "^7.1.0",
+    "@twurple/chat": "^7.1.0",
+    "@twurple/eventsub-ws": "^7.1.0",
+    "@types/config": "^3.3.5",
     "canvas": "^2.11.2",
-    "cron": "^3.1.7",
-    "discord.js": "^14.14.1",
-    "dotenv": "^16.4.5"
+    "config": "^3.3.12",
+    "discord.js": "^14.16.3"
   },
   "devDependencies": {
     "@types/node": "^20.12.7",

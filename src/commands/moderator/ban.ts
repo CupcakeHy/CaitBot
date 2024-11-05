@@ -1,6 +1,8 @@
+import config from 'config';
 import { ChannelType, PermissionFlagsBits, SlashCommandBuilder } from 'discord.js';
 import { command, Reply, Color } from '../../utils/index.js';
-import Keys from '../../keys.js';
+
+const logsChannel = config.get('discord.guild.channels.logs') as string;
 
 const data = new SlashCommandBuilder()
 	.setName('ban')
@@ -53,7 +55,7 @@ export default command(data, async ({ interaction }) => {
 					if (member.bannable) {
 						await member.ban({ reason: reason, deleteMessageSeconds: deleteMessages * 3600 });
 		
-						await interaction.guild.channels.fetch(Keys.logsChannel)
+						await interaction.guild.channels.fetch(logsChannel)
 						.then(logsChannel => {
 							if (logsChannel?.type === ChannelType.GuildText) {
 								logsChannel.send({ embeds: [{ color: Color.Info, description: `${interaction.user} ha baneado a ${user}. Motivo: ${reason}` }] });
@@ -72,7 +74,7 @@ export default command(data, async ({ interaction }) => {
 				} catch (error) {
 					await interaction.guild.members.ban(user);
 
-					await interaction.guild.channels.fetch(Keys.logsChannel)
+					await interaction.guild.channels.fetch(logsChannel)
 						.then(logsChannel => {
 							if (logsChannel?.type === ChannelType.GuildText) {
 								logsChannel.send({ embeds: [{ color: Color.Info, description: `${interaction.user} ha baneado a ${user}. Motivo: ${reason}` }] });

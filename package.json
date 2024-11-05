@@ -26,12 +26,12 @@
     "@types/config": "^3.3.5",
     "canvas": "^2.11.2",
     "config": "^3.3.12",
-    "discord.js": "^14.16.3"
+    "discord.js": "^14.16.3",
+    "typescript": "^5.4.5"
   },
   "devDependencies": {
     "@types/node": "^20.12.7",
     "nodemon": "^3.1.0",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.4.5"
+    "ts-node": "^10.9.2"
   }
 }

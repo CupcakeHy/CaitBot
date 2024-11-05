@@ -31,18 +31,19 @@ authProvider.addUser(userId as UserIdResolvable, tokenData, ['chat']);
 
 const chatClient = new ChatClient({
 	authProvider,
-	channels: [ channel ],
-	// commands: [
-	// 	createBotCommand('discord', (params, { reply }) => {
-	// 		reply('Servidor de Discord: https://discord.gg/s7EKyMm');
-	// 	})
-	// ]
+	channels: [ channel ]
 });
 
 chatClient.connect();
 
-chatClient.onSub((channel, user) => {
+chatClient.onSub(async (channel, user) => {
 	chatClient.say(channel, `¡Muchas gracias por suscribirte, @${user}!`);
+});
+
+chatClient.onMessage(async (channel, text) => {
+	if (text === '!discord') {
+		chatClient.say(channel, 'Servidor de Discord: https://discord.gg/s7EKyMm');
+	}
 });
 
 chatClient.onConnect(() => {

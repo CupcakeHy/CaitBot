@@ -11,15 +11,16 @@ import { ChatClient } from '@twurple/chat';
 const announcementChannel = config.get('discord.guild.channels.announcement') as string;
 
 // Twitch vars
-const channel = config.get('twitch.channel') as string;
-const botChannel = config.get('twitch.botChannel') as string;
+const broadcaster = config.get('twitch.broadcaster') as string;
+const bot = config.get('twitch.bot') as string;
 const clientId = config.get('twitch.clientId') as string;
 const clientSecret = config.get('twitch.clientSecret') as string;
 const appImpliedScopes = [ "chat:edit", "chat:read", "channel:read:redemptions", "channel:manage:redemptions" ];
 
 const authProvider = new RefreshingAuthProvider({ clientId, clientSecret, appImpliedScopes });
 const apiClient = new ApiClient({ authProvider });
-const userId = await apiClient.users.getUserByName(botChannel);
+const broadcasterUser = await apiClient.users.getUserByName(broadcaster);
+const botUser = await apiClient.users.getUserByName(bot);
 
 const tokenData = JSON.parse(await fs.readFile('tokens.json', 'utf8'));
 
@@ -27,33 +28,38 @@ authProvider.onRefresh(async (userId: string, newTokenData: AccessToken) => {
 	await fs.writeFile('tokens.json', JSON.stringify(newTokenData, null, 4), 'utf-8');
 });
 
-authProvider.addUser(userId as UserIdResolvable, tokenData, ['chat']);
+authProvider.addUser(botUser as UserIdResolvable, tokenData, ['chat']);
 
 const chatClient = new ChatClient({
 	authProvider,
-	channels: [ channel ]
+	channels: [ broadcaster ]
 });
 
 chatClient.connect();
 
-chatClient.onSub(async (channel, user) => {
-	chatClient.say(channel, `¡Muchas gracias por suscribirte, @${user}!`);
-});
-
-chatClient.onMessage(async (channel, text) => {
-	if (text == '!discord') {
-		chatClient.say(channel, 'Servidor de Discord: https://discord.gg/s7EKyMm');
-	}
-});
-
-chatClient.onConnect(() => {
-	console.log('[INFO]: Chatbot connected to Twitch chat.');
+chatClient.onAuthenticationSuccess(async () => {
+	console.log('[INFO]: Chatbot connected and authenticated to Twitch chat.');
 });
 
 const listener = new EventSubWsListener({ apiClient });
 listener.start();
 
-const onStreamOnline = listener.onStreamOnline(userId!, async (e) => {
+const commandListener = listener.onChannelChatMessage(broadcasterUser!, botUser!, async (e) => {
+	const text = e.messageText;
+
+	switch (text) {
+		case '!discord':
+			chatClient.say(broadcaster, 'Servidor de Discord: https://discord.gg/s7EKyMm');
+			break;
+	}
+});
+
+const onSubListener = listener.onChannelSubscription(broadcasterUser!, async (e) => {
+	const user = await e.getUser();
+	chatClient.say(broadcaster, `¡Muchas gracias por suscribirte, @${user.name}!`);
+});
+
+const onStreamOnlineListener = listener.onStreamOnline(broadcaster!, async (e) => {
 	const stream = await e.getStream();
 	const userInfo = await e.getBroadcaster();
 
@@ -91,6 +97,6 @@ const onStreamOnline = listener.onStreamOnline(userId!, async (e) => {
 	}
 });
 
-const onRedemptionAdd = listener.onChannelRedemptionAdd(userId!, async(e) => {
-	e.rewardId
-});
+//const onRedemptionAdd = listener.onChannelRedemptionAdd(userId!, async(e) => {
+//	e.rewardId
+//});

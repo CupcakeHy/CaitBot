@@ -59,7 +59,7 @@ const onSubListener = listener.onChannelSubscription(broadcasterUser!, async (e)
 	chatClient.say(broadcaster, `¡Muchas gracias por suscribirte, @${user.name}!`);
 });
 
-const onStreamOnlineListener = listener.onStreamOnline(broadcaster!, async (e) => {
+const onStreamOnlineListener = listener.onStreamOnline(broadcasterUser!, async (e) => {
 	const stream = await e.getStream();
 	const userInfo = await e.getBroadcaster();
 
